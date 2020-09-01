@@ -9,6 +9,8 @@ __pycache__
 **/.env
 **/.env.*
 
+**/*.sqlite3
+
 .vscode/**
 
 # Static files
