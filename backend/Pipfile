@@ -12,9 +12,14 @@ isort = "*"
 [packages]
 django = "*"
 django-environ = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
+pyjwt = "*"
 
 [requires]
 python_version = "3.8"
 
 [scripts]
 server = "python manage.py runserver"
+makemigrate = "python manage.py makemigrations"
+migrate = "python manage.py migrate"

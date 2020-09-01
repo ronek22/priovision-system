@@ -16,6 +16,7 @@ root_path = environ.Path(__file__) - 2
 ENV = env('DJANGO_ENV', default="Development")
 DEBUG = env.bool('DEBUG', default=False)
 SECRET_KEY = env('SECRET_KEY')
+REFRESH_TOKEN_SECRET_KEY = env('REFRESH_TOKEN_SECRET_KEY')
 
 
 from pathlib import Path
@@ -24,17 +25,8 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-
-# SECURITY WARNING: don't run with debug turned on in production!
-
 ALLOWED_HOSTS = []
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -43,7 +35,28 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+    'rest_framework',
+    'accounts',
 ]
+
+CORS_ALLOW_CREDENTIALS = True # to accept cookies vie ajax request
+CORS_ORIGIN_WHITELIST = [
+    'https://localhost:3000' # the domain for front-end app
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'accounts.authentication.SafeJWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated', # make all endpoints private
+    )
+}
+
+AUTH_USER_MODEL = 'accounts.User'
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
