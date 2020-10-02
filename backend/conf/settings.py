@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'accounts',
+    'upc'
 ]
 
 CORS_ALLOW_CREDENTIALS = True # to accept cookies vie ajax request
