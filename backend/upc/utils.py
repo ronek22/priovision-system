@@ -1,5 +1,6 @@
 from .models import Client, TypeOfClient
 import numpy as np
+import decimal
 
 # matrix.item((row, column))
 # row: cash, column: counts 
@@ -10,18 +11,19 @@ def calculate_new_clients(clients):
     New Clients only total
     Profit depends on total_price and ammount of clients 
     '''
-    profit = 0
+    profit = 0.0
     count_threshold = new_client_count_threshold(clients.count())
-    for client in clients:
-        total_threshold = new_client_count_threshold(client.total)
-        multiply = matrix.item((total_threshold,count_threshold))        
-        profit += client.total*multiply
+    for client in clients.all():
+        total_threshold = new_client_price_threshold(client.total)
+        multiply = matrix.item((total_threshold,count_threshold)) 
+        client_profit = float(client.total)*multiply
+        profit += client_profit
 
     return profit
 
     
 
-def calculate_old_clients(clients):
+def calculate_old_clients(clients: Client):
     # matryca 2 na dole total, z lewej core
     # prowizja z core, jak mniejsza od 10 dolicz 3zl
     # matryca 4 premium
@@ -30,8 +32,7 @@ def calculate_old_clients(clients):
 
     pass
 
-def new_client_price_threshold(client):
-    total = client.total
+def new_client_price_threshold(total):
     if total < 79.99:
         return 0
     if total < 90.00:
@@ -47,10 +48,10 @@ def new_client_count_threshold(counted):
         return 2
     return 3 
 
-def calculate_profit_from_clients(clients):
+def calculate_profit_from_clients(clients: Client):
     # grupuj po typie klienta
-    new_clients = Clients.objects.filter(type=TypeOfClient.NEW)
-    old_clients = Clients.objects.filter(type=TypeOfClient.PRESENT)
+    new_clients = Client.objects.filter(type=TypeOfClient.NEW)
+    old_clients = Client.objects.filter(type=TypeOfClient.PRESENT)
     
     # nowy klient tylko total
     # tylko total i to jest cala prowizja

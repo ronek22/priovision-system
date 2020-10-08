@@ -46,6 +46,5 @@ class SafeJWTAuthentication(BaseAuthentication):
         check = CSRFCheck()
         check.process_request(request)
         reason = check.process_view(request, None, (), {})
-        print(reason)
         if reason: # CSRF failed
             raise exceptions.PermissionDenied(f'CSRF Failed: {reason}')

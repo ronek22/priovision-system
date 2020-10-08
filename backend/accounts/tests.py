@@ -2,6 +2,7 @@ import json
 
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from conf.utility import prevent_request_warnings
 from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
@@ -26,6 +27,7 @@ class AccountTestCase(APITestCase):
         self.assertIsNotNone(resp.cookies['csrftoken'])
         self.assertIsNotNone(resp.cookies['refreshtoken'])
 
+    @prevent_request_warnings
     def test_cant_create_user_with_the_same_username(self):
         data = {"username": self.username, "password": self.password}
         response = self.client.post(reverse('register'), data)
@@ -36,6 +38,7 @@ class AccountTestCase(APITestCase):
         response = self.client.post(reverse('register'), data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+    @prevent_request_warnings
     def test_get_profile_unauthorized(self):
         response = self.client.get(self.profile_url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
