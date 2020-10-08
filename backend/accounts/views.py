@@ -7,6 +7,8 @@ from .serializers import UserSerializer
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from .utils import generate_access_token, generate_refresh_token
+from django.conf import settings
+import jwt
 
 
 class CreateUserView(CreateAPIView):

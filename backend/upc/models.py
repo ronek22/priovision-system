@@ -15,3 +15,7 @@ class Client(models.Model):
     core = models.DecimalField(decimal_places=2, max_digits=5)
     premium = models.DecimalField(decimal_places=2, max_digits=5)
     total = models.DecimalField(decimal_places=2, max_digits=5)
+
+    def __str__(self):
+        return f"{self.number} | {self.type} | {self.created_by}" 
+    
