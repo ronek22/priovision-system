@@ -2,7 +2,7 @@
 
 set -ex
 
-EXEC_CMD ='docker-compose run backend'
+EXEC_CMD='docker-compose run backend'
 
 docker-compose up --build -d
 
