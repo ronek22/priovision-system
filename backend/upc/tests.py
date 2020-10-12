@@ -9,6 +9,8 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 from upc.utils import calculate_new_clients, calculate_old_clients
+from conf.utility import prevent_request_warnings
+
 
 from upc.models import Client, TypeOfClient
 
@@ -117,3 +119,14 @@ class UpcClientTestCase(APITestCase):
 
         response = self.client.get(reverse('list_clients'))
         self.assertEqual(len(response.data), 0)
+
+    @prevent_request_warnings
+    def testCannotDeleteDifferentUserClient(self):
+        test_user = get_user_model().objects.create_user(username="test2", password="st3ong-Pssw1d")
+        client = Client.objects.create(created_by=test_user, number=1, total=50.0)
+
+        # self.client is authorized with different user
+        response = self.client.delete(reverse('client_detail_view', kwargs={'pk': client.id}))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
