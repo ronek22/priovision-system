@@ -13,3 +13,12 @@ services:
             - backend/.env
         environment: 
             - LOGS_ROOT=/logs
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile.dev
+        ports:
+            - 4200:4200
+        volumes:
+            - /opt/app/node_modules
+            - ./frontend:/opt/app
