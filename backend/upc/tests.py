@@ -55,7 +55,7 @@ class UpcClientTestCase(APITestCase):
         Client.objects.bulk_create([Client(created_by=self.user,number=x,total=80.0) for x in range(3,13)])
         self.assertEqual(calculate_new_clients(Client.objects), 960.0)
 
-    def testProfitFromOldClients(self):
+    def testProfitFromOldClientsWithoutPremium(self):
         obj = Client.objects.create(created_by=self.user, number=1, total=25.00, core=15.00) # total - 1 prog, 
         self.assertEqual(calculate_old_clients(Client.objects), float(obj.total)*1.7)
 

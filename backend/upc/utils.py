@@ -5,7 +5,9 @@ import decimal
 # matrix.item((row, column))
 # row: cash, column: counts 
 matrix1 = np.mat('0.5 0.8 1 1.2; 0.8 1 1.2 1.4; 1.2 1.2 1.4 1.5')
+matrix2 = np.mat('1.5 1.7; 1.7 1.8; 1.8 2.0')
 
+#region New Clients
 def calculate_new_clients(clients):
     '''
     New Clients only total
@@ -21,17 +23,6 @@ def calculate_new_clients(clients):
 
     return profit
 
-    
-
-def calculate_old_clients(clients: Client):
-    # matryca 2 na dole total, z lewej core
-    # prowizja z core, jak mniejsza od 10 dolicz 3zl
-    # matryca 4 premium
-    # cala prowizja core + premium
-    profit = 0
-
-    pass
-
 def new_client_price_threshold(total):
     if total < 79.99:
         return 0
@@ -46,7 +37,42 @@ def new_client_count_threshold(counted):
         return 1
     if counted < 21:
         return 2
-    return 3 
+    return 3
+
+#endregion 
+
+#region Old Clients
+def calculate_old_clients(clients: Client):
+    profit = 0
+
+    for client in clients.all():
+        total_thresh = old_total_threshold(client.total)
+        core_thresh = old_core_threshold(client.core)
+        multiply = matrix2.item((core_thresh, total_thresh))
+        client_profit = float(client.total)*multiply
+        if core_thresh == 0: client_profit += 3.0
+        profit += client_profit
+        
+    return profit
+
+
+def old_total_threshold(total):
+    if 0.01 <= total <= 25.00:
+        return 0
+    if total >= 25.01:
+        return 1
+    return -1  
+
+def old_core_threshold(core):
+    if 0.01 <= core <= 9.99:
+        return 0
+    if 10.00 <= core <= 20.00:
+        return 1
+    if 20.01 <= core:
+        return 2
+    return -1
+
+#endregion
 
 def calculate_profit_from_clients(clients: Client):
     # grupuj po typie klienta
