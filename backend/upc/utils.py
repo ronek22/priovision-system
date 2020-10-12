@@ -51,10 +51,19 @@ def calculate_old_clients(clients: Client):
         multiply = matrix2.item((core_thresh, total_thresh))
         client_profit = float(client.total)*multiply
         if core_thresh == 0: client_profit += 3.0
+        if client.premium:
+            client_profit += calc_premium(client.premium)
         profit += client_profit
         
     return profit
 
+def calc_premium(premium):
+    if premium <= 14.98:
+        return float(premium)
+    if 14.99 <= premium <= 24.98:
+        return float(premium)*1.4
+    if premium >= 24.99:
+        return float(premium)*1.8 
 
 def old_total_threshold(total):
     if 0.01 <= total <= 25.00:

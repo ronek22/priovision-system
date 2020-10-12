@@ -79,4 +79,17 @@ class UpcClientTestCase(APITestCase):
         obj.refresh_from_db()
         self.assertEqual(calculate_old_clients(Client.objects), float(obj.total)*2.0)
 
+    def testProfitFromOldClientWithPremium(self):
+        obj = Client.objects.create(created_by=self.user, number=1, total=25.00, core=15.00, premium=10.00) # total - 1 prog, 
+        self.assertEqual(calculate_old_clients(Client.objects), float(obj.total)*1.7+10.00)
+
+        Client.objects.filter(pk=obj.pk).update(premium=15.00)
+        obj.refresh_from_db()
+        self.assertEqual(calculate_old_clients(Client.objects), float(obj.total)*1.7+15.0*1.4)
+
+        Client.objects.filter(pk=obj.pk).update(premium=30.00)
+        obj.refresh_from_db()
+        self.assertEqual(calculate_old_clients(Client.objects), float(obj.total)*1.7+30.0*1.8)
+
+
 
