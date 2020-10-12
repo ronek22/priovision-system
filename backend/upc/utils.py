@@ -4,7 +4,7 @@ import decimal
 
 # matrix.item((row, column))
 # row: cash, column: counts 
-matrix = np.mat('0.5 0.8 1 1.2; 0.8 1 1.2 1.4; 1.2 1.2 1.4 1.5')
+matrix1 = np.mat('0.5 0.8 1 1.2; 0.8 1 1.2 1.4; 1.2 1.2 1.4 1.5')
 
 def calculate_new_clients(clients):
     '''
@@ -15,7 +15,7 @@ def calculate_new_clients(clients):
     count_threshold = new_client_count_threshold(clients.count())
     for client in clients.all():
         total_threshold = new_client_price_threshold(client.total)
-        multiply = matrix.item((total_threshold,count_threshold)) 
+        multiply = matrix1.item((total_threshold,count_threshold)) 
         client_profit = float(client.total)*multiply
         profit += client_profit
 

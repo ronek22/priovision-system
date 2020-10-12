@@ -8,7 +8,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
-from upc.utils import calculate_new_clients
+from upc.utils import calculate_new_clients, calculate_old_clients
 
 from upc.models import Client, TypeOfClient
 
@@ -54,4 +54,29 @@ class UpcClientTestCase(APITestCase):
         # First client with amount of 50, now become worth 40 instead of 25
         Client.objects.bulk_create([Client(created_by=self.user,number=x,total=80.0) for x in range(3,13)])
         self.assertEqual(calculate_new_clients(Client.objects), 960.0)
+
+    def testProfitFromOldClients(self):
+        obj = Client.objects.create(created_by=self.user, number=1, total=25.00, core=15.00) # total - 1 prog, 
+        self.assertEqual(calculate_old_clients(Client.objects), float(obj.total)*1.7)
+
+        Client.objects.filter(pk=obj.pk).update(core=21.00)
+        obj.refresh_from_db()
+        self.assertEqual(calculate_old_clients(Client.objects), float(obj.total)*1.8)
+
+        Client.objects.filter(pk=obj.pk).update(core=5.00)
+        obj.refresh_from_db()
+        self.assertEqual(calculate_old_clients(Client.objects), float(obj.total)*1.5+3)
+
+        Client.objects.filter(pk=obj.pk).update(total=30.00)
+        obj.refresh_from_db()
+        self.assertEqual(calculate_old_clients(Client.objects), float(obj.total)*1.7+3)
+
+        Client.objects.filter(pk=obj.pk).update(core=15.00)
+        obj.refresh_from_db()
+        self.assertEqual(calculate_old_clients(Client.objects), float(obj.total)*1.8)
+
+        Client.objects.filter(pk=obj.pk).update(core=21.00)
+        obj.refresh_from_db()
+        self.assertEqual(calculate_old_clients(Client.objects), float(obj.total)*2.0)
+
 
