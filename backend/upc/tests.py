@@ -102,3 +102,18 @@ class UpcClientTestCase(APITestCase):
         self.assertEqual(response.data['Profit']['New'], 960.0)
         self.assertEqual(response.data['Profit']['Old'], 96.5)
         self.assertEqual(response.data['Total'], 1056.5)
+
+    def testUpdateAndRemoveExisitngClient(self):
+        client = Client.objects.create(created_by=self.user, number=1, total=50.0)
+        response = self.client.patch(reverse('client_detail_view', kwargs={'pk': client.id}), {'total': 25.0})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response = self.client.get(reverse('client_detail_view', kwargs={'pk': client.id}))
+        self.assertEqual(response.data['id'], client.id)
+        self.assertEqual(float(response.data['total']), 25.00)
+
+        response = self.client.delete(reverse('client_detail_view', kwargs={'pk': client.id}))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        response = self.client.get(reverse('list_clients'))
+        self.assertEqual(len(response.data), 0)
