@@ -27,4 +27,4 @@ def get_user_profit_for_current_month(request):
     user = request.user
     clients = Client.objects.filter(created_by=user, created_on__month=datetime.now().month)
     profit = calculate_profit_from_clients(clients)
-    return Response()
+    return Response(profit)

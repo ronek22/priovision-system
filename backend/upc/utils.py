@@ -88,15 +88,13 @@ def calculate_profit_from_clients(clients: Client):
     new_clients = Client.objects.filter(type=TypeOfClient.NEW)
     old_clients = Client.objects.filter(type=TypeOfClient.PRESENT)
     
-    # nowy klient tylko total
-    # tylko total i to jest cala prowizja
-    # wysokosc prowizji zalezna od kwoty i ilosci nowych klientow
     profit_from_new = calculate_new_clients(new_clients)
-    # stary klient
-    # matryca 2 na dole total, z lewej core
-    # prowizja z core, jak mniejsza od 10 dolicz 3zl
-    # matryca 4 premium
-    # cala prowizja core + premium
     profit_from_old = calculate_old_clients(old_clients)
 
-    pass
+    return {
+        'Profit': {
+            'New': profit_from_new,
+            'Old': profit_from_old
+        },
+        'Total': profit_from_new + profit_from_old
+    }
