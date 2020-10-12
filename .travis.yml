@@ -8,7 +8,7 @@ jobs:
       before_script:
         - touch ./backend/.env
         - echo SECRET_KEY=$SECRET_KEY >> ./backend/.env
-        - echo DEV=$DEV >> ./backend/.env
+        - echo DEBUG=$DEBUG >> ./backend/.env
         - echo ENV=$ENV >> ./backend/.env
         - echo LOGS_ROOT=$LOGS >> ./backend/.env
         - echo REFRESH_TOKEN_SECRET_KEY=$REFRESH_SECRET
