@@ -25,7 +25,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['backend']
 
 
 INSTALLED_APPS = [
@@ -43,9 +43,11 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True # to accept cookies vie ajax request
-CORS_ORIGIN_WHITELIST = [
-    'https://localhost:3000' # the domain for front-end app
-]
+# CORS_ORIGIN_WHITELIST = [
+#     'https://localhost:4200' # the domain for front-end app
+# ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

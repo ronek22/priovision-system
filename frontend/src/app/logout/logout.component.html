@@ -1,0 +1,15 @@
+<div class="content-container">
+    <div class="content-area centered-content-area">
+        <ng-container *ngIf="!isLoggedOut; else loggedOut">
+            <span class="spinner spinner-inline">
+                Logging out...
+            </span>
+            <span>
+                Logging out...
+            </span>
+        </ng-container>
+        <ng-template #loggedOut>
+              <h2>You have been successfully logged out!</h2>
+          </ng-template>
+    </div>
+</div>

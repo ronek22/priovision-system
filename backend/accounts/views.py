@@ -33,6 +33,7 @@ def login_view(request):
     password = request.data.get('password')
     
     response = Response() # create response object
+    print(f"Username: {username}")
 
     # validation form
     if (username is None) or (password is None):

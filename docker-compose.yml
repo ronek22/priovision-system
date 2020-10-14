@@ -1,5 +1,13 @@
 version: '3'
 services: 
+    nginx:
+        restart: always
+        build:
+            dockerfile: Dockerfile.dev
+            context: ./nginx
+        ports:
+            - 8081:80
+
     backend:
         build:
             context: ./backend

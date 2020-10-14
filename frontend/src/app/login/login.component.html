@@ -1,0 +1,12 @@
+<div class="login-wrapper">
+    <form clrForm [formGroup]="loginForm" (ngSubmit)="onFormSubmit(loginForm.value)" class="login">
+        <label class="title">
+            Logowanie
+        </label>
+        <div class="login-group">
+            <input formControlName="Username" class="username" type="text" placeholder="Username">
+            <input formControlName="Password" class="password" type="password" placeholder="Password">
+            <button [disabled]="!loginForm.valid || isRequesting" type="submit" class="btn btn-primary">LOG IN</button>
+        </div>
+    </form>
+</div>
