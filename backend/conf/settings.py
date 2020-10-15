@@ -25,7 +25,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-ALLOWED_HOSTS = ['backend']
+ALLOWED_HOSTS = ['backend', 'localhost']
 
 
 INSTALLED_APPS = [

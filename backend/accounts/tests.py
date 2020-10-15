@@ -61,5 +61,20 @@ class AccountTestCase(APITestCase):
         resp = self.client.post(reverse('refresh'))
         self.assertNotEqual(old_access_token, resp.data['access_token'])
 
+    @prevent_request_warnings
+    def test_validate_username(self):
+        resp = self.client.post(reverse('validate-username'), {'username': self.username})
+        self.assertFalse(resp.data['available'])
+
+        resp = self.client.post(reverse('validate-username'), {'username': 'noexisteduser'})
+        self.assertTrue(resp.data['available'])
+
+        resp = self.client.post(reverse('validate-username'))
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data['error'], 'Invalid username')
+
+
+
+
 
     

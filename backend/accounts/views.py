@@ -9,6 +9,8 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from .utils import generate_access_token, generate_refresh_token
 from django.conf import settings
 import jwt
+from rest_framework import status
+
 
 
 class CreateUserView(CreateAPIView):
@@ -33,7 +35,6 @@ def login_view(request):
     password = request.data.get('password')
     
     response = Response() # create response object
-    print(f"Username: {username}")
 
     # validation form
     if (username is None) or (password is None):
@@ -60,6 +61,25 @@ def login_view(request):
     }
 
     return response
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@ensure_csrf_cookie
+def username_available(request):
+    # get data from form
+    User = get_user_model()
+    username = request.data.get('username')
+    
+    # validation form
+    if (username is None):
+        return Response({'error': 'Invalid username'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # try to find user
+    user = User.objects.filter(username=username).exists()
+    if user:
+        return Response({'available': False})
+    else:
+        return Response({'available': True})
 
 
 @api_view(['POST'])
