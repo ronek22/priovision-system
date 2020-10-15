@@ -14,6 +14,7 @@ import { HomeComponent } from './home/home.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
+import { UsernameValidator } from './register/username-validator';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { RegisterComponent } from './register/register.component';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    UsernameValidator,
   ],
   bootstrap: [AppComponent]
 })

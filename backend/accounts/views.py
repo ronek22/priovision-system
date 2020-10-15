@@ -77,9 +77,9 @@ def username_available(request):
     # try to find user
     user = User.objects.filter(username=username).exists()
     if user:
-        return Response({'available': False})
+        return Response({'available': False, 'username': username}, status.HTTP_200_OK)
     else:
-        return Response({'available': True})
+        return Response({'available': True, 'username': username}, status.HTTP_200_OK)
 
 
 @api_view(['POST'])

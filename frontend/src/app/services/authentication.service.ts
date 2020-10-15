@@ -33,13 +33,17 @@ export class AuthenticationService {
 
 
    register(form: NgForm) {
-     return this.http.post<any>(`${this.configurationService.apiUrl}/accounts`, form);
+     return this.http.post<any>(`${this.configurationService.apiUrl}/accounts/register`, form);
    }
 
    logout() {
      // remove user from local storage to log out
      localStorage.removeItem('currentUser');
      this.isLoggedIn.next(false);
+   }
+
+   validateUsername(username: string) {
+     return this.http.post<any>(`${this.configurationService.apiUrl}/accounts/validate-username`, {'username': username});
    }
 
    changeStatus(): Observable<boolean> {

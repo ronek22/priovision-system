@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
       .subscribe((user: any) => {
         this.authenticationService.isRequesting = false;
         console.log("TRYING TO LOGIN")
-        this.router.navigate(['']);
+        this.router.navigate([this.returnUrl]);
       });
   }
 
