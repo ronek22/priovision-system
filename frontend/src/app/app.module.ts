@@ -13,6 +13,7 @@ import { JwtInterceptor } from './services/jwt.interceptor';
 import { HomeComponent } from './home/home.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { LogoutComponent } from './logout/logout.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LogoutComponent } from './logout/logout.component';
     LoginComponent,
     HomeComponent,
     NavBarComponent,
-    LogoutComponent
+    LogoutComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

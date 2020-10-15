@@ -1,28 +1,33 @@
-<header class="header-6">
-    <div class="branding">
-      <a href="#" class="nav-link">
-        <clr-icon shape="coin-bag"></clr-icon>
-        <span class="title">Provision system</span>
-      </a>
-    </div>
-
-    <div class="header-nav">
-      <a *ngFor="let link of pageLinks"
-      (click)="activePageLink = link"
-      [active]="activePageLink == link"
-      routerLink="/{{link.route}}" routerLinkActive="active"
-      class="active nav-link nav-text">{{link.text}}</a>
-    </div>
-
-    <div class="header-actions">
-
-      <button *ngFor="let link of accountLinks"
-            (click)="activePageLink = link"
-            [active]="activePageLink == link"
-            routerLink="/{{link.route}}" routerLinkActive="active"
-            [attr.class]="link.class"
-            >
-            <clr-icon [attr.shape]="link.icon"></clr-icon>
-        </button>
-    </div>
-  </header>
+    <clr-header class="header-6">
+        <div class="branding">
+          <a href="#" class="nav-link">
+            <clr-icon shape="coin-bag"></clr-icon>
+            <span class="title">Provision system</span>
+          </a>
+        </div>
+    
+        <div class="header-nav">
+          <a *ngFor="let link of pageLinks"
+          (click)="activePageLink = link"
+          [active]="activePageLink == link"
+          routerLink="/{{link.route}}" routerLinkActive="active"
+          class="active nav-link nav-text">{{link.text}}</a>
+        </div>
+    
+        <div class="header-actions">
+    
+            <a *ngIf="username != null" href="javascript://" class="nav-link nav-icon-text">
+                <clr-icon shape="user"></clr-icon>
+                <span class="nav-text">{{username}}</span>
+            </a>
+    
+          <button *ngFor="let link of accountLinks"
+                (click)="activePageLink = link"
+                [active]="activePageLink == link"
+                routerLink="/{{link.route}}" routerLinkActive="active"
+                [attr.class]="link.class"
+                >
+                <clr-icon [attr.shape]="link.icon"></clr-icon>
+            </button>
+        </div>
+      </clr-header>

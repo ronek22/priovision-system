@@ -1,0 +1,38 @@
+<div class="login-wrapper">
+    <form clrForm [formGroup]="registerForm" (ngSubmit)="submit()" class="login">
+        <section class="title">
+            <h3 class="welcome">Welcome to</h3>
+            Provision system
+            <h5 class="hint">Fill below fields to sign up</h5>
+        </section>
+
+        <div class="login-group">
+
+            <clr-input-container>
+                <label class="clr-sr-only">Username</label>
+                <input clrInput formControlName="Username" class="username" placeholder="Username" />
+                <clr-control-error *clrIfError="'required'">Username required</clr-control-error>
+            </clr-input-container>
+
+            <clr-password-container>
+                <label class="clr-sr-only">Password</label>
+                <input clrPassword formControlName="Password" type="password" placeholder="Password" />
+                <clr-control-error *clrIfError="'required'">Password required</clr-control-error>
+            </clr-password-container>
+
+            <clr-password-container>
+                <label class="clr-sr-only">Confirm password</label>
+                <input clrPassword formControlName="PasswordConfirmation" placeholder="Password confirmation" />
+                <clr-control-error *clrIfError="'required'">Confirm password is required</clr-control-error>
+                <clr-control-error *clrIfError="'mismatch'">Password confirmation must match</clr-control-error>
+            </clr-password-container>
+
+            <clr-input-container>
+                <label class="clr-sr-only">Email</label>
+                <input clrInput formControlName="Email" type="email" placeholder="email@domain.com"/>
+                <clr-control-error *clrIfError="'email'">Invalid email address</clr-control-error>
+            </clr-input-container>
+            <button [disabled]="!registerForm.valid" type="submit" class="btn btn-primary">SIGN UP</button>
+        </div>
+    </form>
+</div>

@@ -1,12 +1,22 @@
 <div class="login-wrapper">
-    <form clrForm [formGroup]="loginForm" (ngSubmit)="onFormSubmit(loginForm.value)" class="login">
-        <label class="title">
-            Logowanie
-        </label>
+    <form [formGroup]="loginForm" (ngSubmit)="onFormSubmit(loginForm.value)" class="login">
+        <section class="title">
+            <h3 class="welcome">Welcome to</h3>
+            Provision system
+            <h5 class="hint">Use your username to log in</h5>
+        </section>
         <div class="login-group">
-            <input formControlName="Username" class="username" type="text" placeholder="Username">
-            <input formControlName="Password" class="password" type="password" placeholder="Password">
+            <clr-input-container>
+                <label class="clr-sr-only">Username</label>
+                <input clrInput formControlName="Username" class="username" type="text" placeholder="Username">
+            </clr-input-container>
+            <clr-password-container>
+                <label class="clr-sr-only">Password</label>
+                <input clrPassword formControlName="Password" class="password" type="password" placeholder="Password">
+                <clr-control-error *clrIfError="'required'">Passowrd required</clr-control-error>
+            </clr-password-container>
             <button [disabled]="!loginForm.valid || isRequesting" type="submit" class="btn btn-primary">LOG IN</button>
+            <a routerLink='/register' routerLinkActive="active" class="signup">Sign up</a>
         </div>
     </form>
 </div>

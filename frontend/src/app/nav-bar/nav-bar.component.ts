@@ -10,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class NavBarComponent implements OnInit {
 
+  username: string = null;
   pageLinks = [];
   loggedInPageLinks = [{ route: 'home', text:'Home'}]
   loggedOutPageLinks = [{ route: 'home', text: 'Home'}]
@@ -27,6 +28,7 @@ export class NavBarComponent implements OnInit {
       .subscribe((result: boolean) => {
         this.accountLinks = result ? this.loggedInAccountLinks : this.loggedOutAccountLinks;
         this.pageLinks = result ? this.loggedInPageLinks : this.loggedOutPageLinks;
+        this.username = result ? JSON.parse(localStorage.getItem('currentUser')).user.username : null;
       })
   }
 
