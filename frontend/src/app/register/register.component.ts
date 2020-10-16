@@ -57,16 +57,16 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       'username': [null, [Validators.required], this.usernameValidator.checkUsername.bind(this.usernameValidator)],
       'password': [null, [Validators.required, Validators.minLength(8)]],
-      'passwordConfirmation': [null, [Validators.required, passwordMatchValidator('Password')]],
+      'passwordConfirmation': [null, [Validators.required, passwordMatchValidator('password')]],
       'email': [null, [emailOrEmpty]]
     })
   }
 
   submit(form: NgForm) {
     this.authenticationService.changeStatus().pipe(switchMap(() => this.authenticationService.register(form)))
-    .subscribe(message => {
+    .subscribe(() => {
       this.authenticationService.isRequesting = false;
-      this.router.navigate['/login'];
+      this.router.navigate(['/login']);
       console.log("Success registartion");
     })
   }

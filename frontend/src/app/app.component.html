@@ -3,6 +3,11 @@
 
     <div class="content-container">
       <div class="content-area">
+        <div class="loading-overlay" *ngIf="loading">
+          <span class="spinner">
+            Loading...
+          </span>
+        </div>
         <router-outlet></router-outlet>
         </div>
       </div>
