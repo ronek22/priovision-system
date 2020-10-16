@@ -15,6 +15,8 @@ export class JwtInterceptor implements HttpInterceptor {
       });
     }
 
+    // https://stackoverflow.com/questions/45303622/angular-4-3-http-interceptor-refresh-jwt-token
+
     return next.handle(request);
   }
 }

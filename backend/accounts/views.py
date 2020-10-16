@@ -110,4 +110,4 @@ def refresh_token_view(request):
         raise exceptions.AuthenticationFailed('user is inactive')
 
     access_token = generate_access_token(user)
-    return Response({'access_token': access_token})
+    return Response({'access_token': access_token, 'user':UserSerializer(user).data})

@@ -8,13 +8,16 @@ import { ClarityModule} from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './services/jwt.interceptor';
 import { HomeComponent } from './home/home.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
 import { UsernameValidator } from './register/username-validator';
+import { ClientComponent } from './client/client.component';
+import { ClientCreateComponent } from './client/client-create/client-create.component';
+import { ErrorInterceptor } from './services/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,8 @@ import { UsernameValidator } from './register/username-validator';
     NavBarComponent,
     LogoutComponent,
     RegisterComponent,
+    ClientComponent,
+    ClientCreateComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +37,10 @@ import { UsernameValidator } from './register/username-validator';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'csrftoken',
+      headerName: 'X-CSRFToken',
+    }),
     FormsModule,
 
   ],
@@ -40,6 +49,7 @@ import { UsernameValidator } from './register/username-validator';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     UsernameValidator,
   ],
   bootstrap: [AppComponent]

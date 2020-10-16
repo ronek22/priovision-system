@@ -4,9 +4,9 @@ from django.conf import settings
 
 def generate_access_token(user):
     '''Function to generate a new access token for user'''
+    expire = datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
     access_token_payload = {
         'user_id': user.id,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5),
         'iat': datetime.datetime.utcnow(),
     }
 

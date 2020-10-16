@@ -42,6 +42,10 @@ export class AuthenticationService {
      this.isLoggedIn.next(false);
    }
 
+   refreshToken() {
+     return this.http.post<any>(`${this.configurationService.apiUrl}/accounts/refresh`, {});
+   }
+
    validateUsername(username: string) {
      return this.http.post<any>(`${this.configurationService.apiUrl}/accounts/validate-username`, {'username': username});
    }

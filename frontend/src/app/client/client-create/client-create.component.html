@@ -1,0 +1,32 @@
+<h3>Create client</h3>
+<form clrForm clrLayout="horizontal" [formGroup]="clientForm" (ngSubmit)="submit(clientForm.value)">
+    <clr-select-container>
+        <label>Type of client</label>
+        <select clrSelect formControlName="type">
+            <option value="OLD">Present Client</option>
+            <option value="NEW">New Client</option>
+        </select>
+    </clr-select-container>
+
+    <clr-input-container>
+        <label>Number of client</label>
+        <input clrInput type="number" formControlName="number"/>
+    </clr-input-container>
+
+    <clr-input-container>
+        <label>Core</label>
+        <input clrInput type="number" formControlName="core"/>
+    </clr-input-container>
+
+    <clr-input-container>
+        <label>Premium</label>
+        <input clrInput type="number" formControlName="premium"/>
+    </clr-input-container>
+
+    <clr-input-container>
+        <label>Total</label>
+        <input clrInput type="number" formControlName="total"/>
+    </clr-input-container>
+
+    <button [clrLoading]="submitBtnState" [disabled]="!clientForm.valid" type="submit" class="btn btn-primary btn-block">ADD CLIENT</button>
+</form>

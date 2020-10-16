@@ -1,0 +1,39 @@
+<h3>Clients for current month</h3>
+<clr-datagrid>
+    <clr-dg-column *ngFor="let col of columns">
+        {{col}}
+    </clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let client of clients" [clrDgItem]="client">
+        <clr-dg-action-overflow>
+            <button class="action-item" (click)="onEdit(client)">Edit</button>
+            <button class="action-item" (click)="onDelete(client)">Delete</button>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{client.id}}</clr-dg-cell>
+        <clr-dg-cell>{{client.number}}</clr-dg-cell>
+        <clr-dg-cell>{{client.type}}</clr-dg-cell>
+        <clr-dg-cell>{{client.core}}</clr-dg-cell>
+        <clr-dg-cell>{{client.premium}}</clr-dg-cell>
+        <clr-dg-cell>{{client.total}}</clr-dg-cell>
+        <clr-dg-cell>{{client.created_on | date:'yyyy-MM-dd'}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+            <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Clients per page</clr-dg-page-size>
+            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+            of {{pagination.totalItems}} users
+        </clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+
+<div class="clr-row">
+    <div class="clr-col-4">
+        <client-create></client-create>
+
+    </div>
+    <div class="clr-col-8">
+        <h2>Provision:</h2>
+        <h1 class="green">{{profit.Total|currency:"PLN":"symbol"}}</h1>
+    </div>
+</div>
