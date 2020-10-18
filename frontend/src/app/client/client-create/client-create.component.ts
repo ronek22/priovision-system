@@ -11,6 +11,9 @@ import { ValidatorsService } from 'src/app/services/validators.service';
 })
 export class ClientCreateComponent implements OnInit {
   
+  isEdited: boolean = false;
+  isDeleted: boolean = false;
+
   clientForm: FormGroup;
   type: string;
   number: number;
@@ -18,6 +21,7 @@ export class ClientCreateComponent implements OnInit {
   premium: number;
   total: number;
   
+
   submitBtnState: ClrLoadingState = ClrLoadingState.DEFAULT;
 
   constructor(
@@ -40,7 +44,7 @@ export class ClientCreateComponent implements OnInit {
     })
   }
 
-  submit(form: NgForm) {
+  onCreate(form: NgForm) {
     this.submitBtnState = ClrLoadingState.LOADING;
     this.clientService.addClient(form).subscribe(() => {
       this.submitBtnState = ClrLoadingState.SUCCESS;
@@ -52,6 +56,14 @@ export class ClientCreateComponent implements OnInit {
       this.submitBtnState = ClrLoadingState.ERROR;
     }
     )
+  }
+
+  onEdit(form: NgForm){
+
+  }
+
+  onDelete(id: number){
+    
   }
 
 }

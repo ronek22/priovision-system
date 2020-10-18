@@ -1,5 +1,5 @@
 <h3>Create client</h3>
-<form clrForm clrLayout="horizontal" [formGroup]="clientForm" (ngSubmit)="submit(clientForm.value)">
+<form clrForm clrLayout="horizontal" [formGroup]="clientForm" (ngSubmit)="onCreate(clientForm.value)">
     <clr-select-container>
         <label>Type of client</label>
         <select clrSelect formControlName="type">

@@ -12,12 +12,15 @@ import { ClientService } from '../services/client.service';
 export class ClientComponent implements OnInit {
 
   private componentDestroyed: Subject<void> = new Subject();
+  isDeleteMode: boolean = false;
+  currentClient: Client;
 
   constructor(private clientService: ClientService) { 
   }
 
-  columns = ["Client Id", "Number", "Type", "Core", "Premium", "Total", "Created On"];
-  index = ["id", "number", "type", "core", "premium", "total", "created_on"];
+  columns = ["Number", "Type", "Core", "Premium", "Total", "Created On"];
+  index = ["number", "type", "core", "premium", "total", "created_on"];
+
 
   clients: Client[] = [];
   profit;
@@ -40,12 +43,24 @@ export class ClientComponent implements OnInit {
     
   }
 
-  onEdit(client) {
-    console.log(`Edit: ${client.id}`);
+  setContextDelete(client) {
+    this.isDeleteMode = true;
+    this.currentClient = client;
   }
 
-  onDelete(client) {
-    console.log(`Delete ${client.id}`);
+  unsetContextDelete() {
+    this.isDeleteMode = false;
+    this.currentClient = null;
+  }
+
+  onDelete() {
+    console.log(`Deleted current user ${this.currentClient.id}`);
+    this.isDeleteMode = false;
+    this.clientService.reload.next(true);
+  }
+
+  onEdit(client) {
+    console.log(`Edit: ${client.id}`);
   }
 
   openDialog(): void {

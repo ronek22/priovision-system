@@ -7,9 +7,8 @@
     <clr-dg-row *clrDgItems="let client of clients" [clrDgItem]="client">
         <clr-dg-action-overflow>
             <button class="action-item" (click)="onEdit(client)">Edit</button>
-            <button class="action-item" (click)="onDelete(client)">Delete</button>
+            <button class="action-item" (click)="setContextDelete(client)">Delete</button>
         </clr-dg-action-overflow>
-        <clr-dg-cell>{{client.id}}</clr-dg-cell>
         <clr-dg-cell>{{client.number}}</clr-dg-cell>
         <clr-dg-cell>{{client.type}}</clr-dg-cell>
         <clr-dg-cell>{{client.core}}</clr-dg-cell>
@@ -27,6 +26,15 @@
     </clr-dg-footer>
 </clr-datagrid>
 
+<clr-modal [(clrModalOpen)]="isDeleteMode">
+    <h3 class="modal-title">Delete client?</h3>
+    <div class="modal-body">This cannot be undone.</div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-info" (click)="unsetContextDelete()">Cancel</button>
+        <button type="button" class="btn btn-warning" (click)="onDelete()">Delete</button>
+    </div>
+</clr-modal>
+
 <div class="clr-row">
     <div class="clr-col-4">
         <client-create></client-create>
@@ -34,6 +42,8 @@
     </div>
     <div class="clr-col-8">
         <h2>Provision:</h2>
-        <h1 class="green">{{profit.Total|currency:"PLN":"symbol"}}</h1>
+        <h1 class="green" *ngIf="profit">
+            {{ profit.Total|number:'1.2-2'}} PLN
+        </h1>
     </div>
 </div>
