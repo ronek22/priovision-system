@@ -2,6 +2,7 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ClrLoadingState } from '@clr/angular';
 import { Client } from 'src/app/models/client';
+import { AlertService } from 'src/app/services/alert.service';
 import { ClientService } from 'src/app/services/client.service';
 import { ValidatorsService } from 'src/app/services/validators.service';
 
@@ -27,7 +28,8 @@ export class ClientCreateComponent implements OnInit {
   constructor(
     private clientService: ClientService,
     private fb: FormBuilder,
-    private validatorsService: ValidatorsService
+    private validatorsService: ValidatorsService,
+    private alertService: AlertService
     ) { }
 
   sendAfterSuccess() {
@@ -74,8 +76,9 @@ export class ClientCreateComponent implements OnInit {
       this.clientForm.reset();
     }, 
     (error) => { 
-      console.info(error);
       this.submitBtnState = ClrLoadingState.ERROR;
+      console.info(error.error);
+      this.alertService.error(`Cannot create client! Error: ${error.error.core[0]}`)
     }
     )
   }
@@ -89,7 +92,7 @@ export class ClientCreateComponent implements OnInit {
       this.clientForm.reset();
     }, 
     (error) => { 
-      console.info(error);
+      this.alertService.error(`Cannot edit client! Error: ${error.error.core[0]}`)
       this.submitBtnState = ClrLoadingState.ERROR;
     }
     )

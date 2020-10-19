@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil, switchMap } from 'rxjs/operators';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit(): void {
@@ -56,8 +58,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate([this.returnUrl]);
       },
       (error) => {
-        console.info(error);
-        console.log(`Something bad happened ${error}`)
+        this.alertService.error(`Cannot login! Error: ${error.error.detail}`)
       });
   }
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Client } from '../models/client';
+import { AlertService } from '../services/alert.service';
 import { ClientService } from '../services/client.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class ClientComponent implements OnInit {
   isDeleteMode: boolean = false;
   currentClient: Client;
 
-  constructor(private clientService: ClientService) { 
+  constructor(private clientService: ClientService, private alertService: AlertService) { 
   }
 
   columns = ["Number", "Type", "Core", "Premium", "Total", "Created On"];
@@ -59,7 +60,8 @@ export class ClientComponent implements OnInit {
       this.clientService.sendRequestToReload();
     }, 
     (error) => { 
-      console.info(error);
+      this.alertService.error(`Cannot delete client! Error: ${error.message}`)
+
     })
     this.isDeleteMode = false;
 

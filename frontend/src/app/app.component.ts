@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterEvent } from '@angular/router';
+import { AlertService } from './services/alert.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,14 @@ import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Rout
 export class AppComponent {
   title = 'frontend';
 
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  }
+
   loading: boolean = true;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, public alertService: AlertService) {
     this.router.events.subscribe((e: RouterEvent) => {
       this.navigationInterceptor(e);
     })

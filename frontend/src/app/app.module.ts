@@ -18,6 +18,7 @@ import { UsernameValidator } from './register/username-validator';
 import { ClientComponent } from './client/client.component';
 import { ClientCreateComponent } from './client/client-create/client-create.component';
 import { ErrorInterceptor } from './services/error.interceptor';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ErrorInterceptor } from './services/error.interceptor';
     RegisterComponent,
     ClientComponent,
     ClientCreateComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
