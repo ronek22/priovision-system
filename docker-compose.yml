@@ -1,5 +1,12 @@
 version: '3'
 services: 
+    db:
+        image: postgres
+        environment: 
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+
     nginx:
         restart: always
         build:
@@ -21,6 +28,8 @@ services:
             - backend/.env
         environment: 
             - LOGS_ROOT=/logs
+        depends_on: 
+            - db
     frontend:
         build:
             context: ./frontend
