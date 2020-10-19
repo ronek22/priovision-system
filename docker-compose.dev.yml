@@ -7,28 +7,36 @@ services:
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
 
+    nginx:
+        restart: always
+        build:
+            dockerfile: Dockerfile.dev
+            context: ./nginx
+        ports:
+            - 8081:80
+
     backend:
         build:
             context: ./backend
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile.dev
         volumes: 
             - ./backend:/code
             - ./backend/logs/web:/logs
         ports:
             - 8000:8000
         env_file: 
-            - backend/.env
+            - backend/.env.dev
         environment: 
             - LOGS_ROOT=/logs
-            - ENV_PATH=./.env
+            - ENV_PATH=./.env.dev
         depends_on: 
             - db
-        command: bash -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 conf.wsgi"
     frontend:
         build:
             context: ./frontend
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile.dev
         ports:
-            - 80:80
-        depends_on:
-            - backend
+            - 4200:4200
+        volumes:
+            - /opt/app/node_modules
+            - ./frontend:/opt/app

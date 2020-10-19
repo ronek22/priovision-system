@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import environ
 env = environ.Env()
+
+ENV_PATH = env.str('ENV_PATH', default="./.env")
+
+env.read_env(ENV_PATH)
+
 root_path = environ.Path(__file__) - 2
 ENV = env('DJANGO_ENV', default="Development")
 DEBUG = env.bool('DEBUG', default=False)
