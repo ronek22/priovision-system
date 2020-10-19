@@ -36,7 +36,6 @@ export class RegisterComponent implements OnInit {
   passwordConfirmation: string = '';
   email: string = '';
   returnUrl: string = '';
-  hide = true;
 
   private componentDestroyed: Subject<void> = new Subject();
 

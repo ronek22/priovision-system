@@ -53,7 +53,6 @@ export class LoginComponent implements OnInit {
     this.authenticationService.changeStatus().pipe(switchMap(() => this.authenticationService.login(form['Username'], form['Password'])))
       .subscribe((user: any) => {
         this.authenticationService.isRequesting = false;
-        console.log("TRYING TO LOGIN")
         this.router.navigate([this.returnUrl]);
       });
   }

@@ -46,13 +46,16 @@ export class ClientCreateComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('value changed', this.edited);
-    this.clientForm.setValue({
-      type: this.edited.type,
-      number: this.edited.number,
-      core: this.edited.core,
-      premium: this.edited.premium,
-      total: this.edited.total
-    })
+    if(this.clientForm){
+      this.clientForm.setValue({
+        type: this.edited.type,
+        number: this.edited.number,
+        core: this.edited.core,
+        premium: this.edited.premium,
+        total: this.edited.total
+      })
+    }
+
   }
 
   onSubmit(form: NgForm) {
