@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ClrLoadingState } from '@clr/angular';
+import { Client } from 'src/app/models/client';
 import { ClientService } from 'src/app/services/client.service';
 import { ValidatorsService } from 'src/app/services/validators.service';
 
@@ -11,8 +12,7 @@ import { ValidatorsService } from 'src/app/services/validators.service';
 })
 export class ClientCreateComponent implements OnInit {
   
-  isEdited: boolean = false;
-  isDeleted: boolean = false;
+  @Input() edited: Client;
 
   clientForm: FormGroup;
   type: string;
@@ -44,6 +44,25 @@ export class ClientCreateComponent implements OnInit {
     })
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('value changed', this.edited);
+    this.clientForm.setValue({
+      type: this.edited.type,
+      number: this.edited.number,
+      core: this.edited.core,
+      premium: this.edited.premium,
+      total: this.edited.total
+    })
+  }
+
+  onSubmit(form: NgForm) {
+    if (this.edited) {
+      this.onEdit(this.edited.id, form);
+    } else {
+      this.onCreate(form);
+    }
+  } 
+
   onCreate(form: NgForm) {
     this.submitBtnState = ClrLoadingState.LOADING;
     this.clientService.addClient(form).subscribe(() => {
@@ -58,12 +77,26 @@ export class ClientCreateComponent implements OnInit {
     )
   }
 
-  onEdit(form: NgForm){
-
+  onEdit(id: any, form: NgForm){
+    this.submitBtnState = ClrLoadingState.LOADING;
+    this.clientService.editClient(id, form).subscribe(() => {
+      this.submitBtnState = ClrLoadingState.SUCCESS;
+      this.sendAfterSuccess();
+      this.edited = null;
+      this.clientForm.reset();
+    }, 
+    (error) => { 
+      console.info(error);
+      this.submitBtnState = ClrLoadingState.ERROR;
+    }
+    )
   }
 
-  onDelete(id: number){
-    
+  cancelEdit() {
+    this.edited = null;
+    this.clientForm.reset();
   }
+
+
 
 }

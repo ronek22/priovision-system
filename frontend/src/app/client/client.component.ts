@@ -55,12 +55,19 @@ export class ClientComponent implements OnInit {
 
   onDelete() {
     console.log(`Deleted current user ${this.currentClient.id}`);
+    this.clientService.deleteClient(this.currentClient.id).subscribe(() => {
+      this.clientService.sendRequestToReload();
+    }, 
+    (error) => { 
+      console.info(error);
+    })
     this.isDeleteMode = false;
-    this.clientService.reload.next(true);
+
   }
 
   onEdit(client) {
     console.log(`Edit: ${client.id}`);
+    this.currentClient = client;
   }
 
   openDialog(): void {

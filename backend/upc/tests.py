@@ -9,6 +9,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 from upc.utils import calculate_new_clients, calculate_old_clients
+from upc.serializers import ClientSerializer
 from conf.utility import prevent_request_warnings
 
 
@@ -110,9 +111,19 @@ class UpcClientTestCase(APITestCase):
         response = self.client.patch(reverse('client_detail_view', kwargs={'pk': client.id}), {'total': 25.0})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+        serialized = ClientSerializer(client).data
+        data = {
+            'number': serialized.get('number'),
+            'type': serialized.get('type'),
+            'total': 30.0
+        }
+
+        response = self.client.put(reverse('client_detail_view', kwargs={'pk': client.id}), data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
         response = self.client.get(reverse('client_detail_view', kwargs={'pk': client.id}))
         self.assertEqual(response.data['id'], client.id)
-        self.assertEqual(float(response.data['total']), 25.00)
+        self.assertEqual(float(response.data['total']), 30.00)
 
         response = self.client.delete(reverse('client_detail_view', kwargs={'pk': client.id}))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

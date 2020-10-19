@@ -9,3 +9,11 @@
   padding-left: 0;
   padding-right: 0;
 }
+
+.btn-group {
+  display: flex;
+}
+
+.special .btn {
+  flex: 1;
+}

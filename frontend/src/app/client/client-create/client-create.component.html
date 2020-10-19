@@ -1,5 +1,6 @@
-<h3>Create client</h3>
-<form clrForm clrLayout="horizontal" [formGroup]="clientForm" (ngSubmit)="onCreate(clientForm.value)">
+<h3 *ngIf="!edited">Create client</h3>
+<h3 *ngIf="edited">Edit client <strong>#{{edited.number}}</strong></h3>
+<form clrForm clrLayout="horizontal" [formGroup]="clientForm" (ngSubmit)="onSubmit(clientForm.value)">
     <clr-select-container>
         <label>Type of client</label>
         <select clrSelect formControlName="type">
@@ -28,5 +29,14 @@
         <input clrInput type="number" formControlName="total"/>
     </clr-input-container>
 
-    <button [clrLoading]="submitBtnState" [disabled]="!clientForm.valid" type="submit" class="btn btn-primary btn-block">ADD CLIENT</button>
+
+    <div *ngIf="edited" class="btn-group btn-primary special">
+        <button class="btn btn-primary" (click)="cancelEdit()">CANCEL</button>
+        <button [clrLoading]="submitBtnState" [disabled]="!clientForm.valid" type="submit" class="btn btn-danger">EDIT CLIENT</button>
+    </div>
+    <button *ngIf="!edited" [clrLoading]="submitBtnState" [disabled]="!clientForm.valid" type="submit" class="btn btn-success btn-block">ADD CLIENT</button>
+
+    
 </form>
+
+<p *ngIf="edited">Edited user: {{edited.number}}</p>

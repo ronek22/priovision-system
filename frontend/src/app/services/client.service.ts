@@ -27,6 +27,14 @@ export class ClientService {
     return this.http.post<any>(`${this.baseLink}/create`, form);
   }
 
+  editClient(id, form) {
+    return this.http.put<any>(`${this.baseLink}/client/${id}/`, form);
+  }
+
+  deleteClient(id) {
+    return this.http.delete<any>(`${this.baseLink}/client/${id}/`);
+  }
+
 
   getProfit() {
     return this.http.get<any>(`${this.baseLink}/profit`);
