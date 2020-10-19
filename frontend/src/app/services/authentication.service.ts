@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigurationService } from './configuration.service';
-import { ReplaySubject, Observable, of } from 'rxjs';
+import { ReplaySubject, Observable, of, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NgForm } from '@angular/forms';
 
@@ -11,7 +11,7 @@ import { NgForm } from '@angular/forms';
 })
 export class AuthenticationService {
   isRequesting: boolean = false;
-  isLoggedIn = new ReplaySubject<boolean>(1);
+  isLoggedIn = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient, private configurationService: ConfigurationService) {
       this.checkIfUserInLocalStorage();
@@ -39,6 +39,7 @@ export class AuthenticationService {
    logout() {
      // remove user from local storage to log out
      localStorage.removeItem('currentUser');
+     localStorage.removeItem('refreshtoken');
      this.isLoggedIn.next(false);
    }
 

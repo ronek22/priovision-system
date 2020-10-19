@@ -17,7 +17,6 @@ export class LogoutComponent implements OnInit {
   }
 
   logout(){
-    let currentUser = JSON.parse(localStorage.getItem('currentUser'))
     // add here something like snackbar
     this.isLoggedOut = true;
     this.authenticationService.logout();

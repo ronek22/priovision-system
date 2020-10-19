@@ -1,6 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { empty, Observable } from 'rxjs'
+import { empty, Observable, throwError } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 import { AuthenticationService } from './authentication.service'
 
@@ -12,8 +12,13 @@ export class ErrorInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
             if (err.status === 403) {
+                if (!this.authenticationService.isLoggedIn.getValue()) {
+                    return throwError(err);
+                }
                 return this.handleUnauthorized(request, next);
             }
+
+            return throwError(err);
             
         }))
     }

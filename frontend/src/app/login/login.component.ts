@@ -51,9 +51,13 @@ export class LoginComponent implements OnInit {
   // Exectued when Form is Submitted
   onFormSubmit(form: NgForm) {
     this.authenticationService.changeStatus().pipe(switchMap(() => this.authenticationService.login(form['Username'], form['Password'])))
-      .subscribe((user: any) => {
+      .subscribe(() => {
         this.authenticationService.isRequesting = false;
         this.router.navigate([this.returnUrl]);
+      },
+      (error) => {
+        console.info(error);
+        console.log(`Something bad happened ${error}`)
       });
   }
 
