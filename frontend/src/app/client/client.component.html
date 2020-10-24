@@ -1,49 +1,61 @@
 <h3>Clients for current month</h3>
 <clr-datagrid>
-    <clr-dg-column *ngFor="let col of columns">
-        {{col}}
-    </clr-dg-column>
+  <clr-dg-column *ngFor="let col of columns">
+    {{col}}
+  </clr-dg-column>
 
-    <clr-dg-row *clrDgItems="let client of clients" [clrDgItem]="client">
-        <clr-dg-action-overflow>
-            <button class="action-item" (click)="onEdit(client)">Edit</button>
-            <button class="action-item" (click)="setContextDelete(client)">Delete</button>
-        </clr-dg-action-overflow>
-        <clr-dg-cell>{{client.number}}</clr-dg-cell>
-        <clr-dg-cell>{{client.type}}</clr-dg-cell>
-        <clr-dg-cell>{{client.core}}</clr-dg-cell>
-        <clr-dg-cell>{{client.premium}}</clr-dg-cell>
-        <clr-dg-cell>{{client.total}}</clr-dg-cell>
-        <clr-dg-cell>{{client.created_on | date:'yyyy-MM-dd'}}</clr-dg-cell>
-    </clr-dg-row>
+  <clr-dg-row *clrDgItems="let client of clients" [clrDgItem]="client">
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="onEdit(client)">Edit</button>
+      <button class="action-item" (click)="setContextDelete(client)">Delete</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>{{client.number}}</clr-dg-cell>
+    <clr-dg-cell>{{client.type}}</clr-dg-cell>
+    <clr-dg-cell>{{client.core}}</clr-dg-cell>
+    <clr-dg-cell>{{client.premium}}</clr-dg-cell>
+    <clr-dg-cell>{{client.total}}</clr-dg-cell>
+    <clr-dg-cell>{{client.created_on | date:'yyyy-MM-dd'}}</clr-dg-cell>
+    <clr-dg-cell class="green">{{client.profit}}</clr-dg-cell>
 
-    <clr-dg-footer>
-        <clr-dg-pagination #pagination [clrDgPageSize]="10">
-            <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Clients per page</clr-dg-page-size>
-            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-            of {{pagination.totalItems}} users
-        </clr-dg-pagination>
-    </clr-dg-footer>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Clients per page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+      of {{pagination.totalItems}} users
+    </clr-dg-pagination>
+  </clr-dg-footer>
 </clr-datagrid>
 
 <clr-modal [(clrModalOpen)]="isDeleteMode">
-    <h3 class="modal-title">Delete client?</h3>
-    <div class="modal-body">This cannot be undone.</div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-info" (click)="unsetContextDelete()">Cancel</button>
-        <button type="button" class="btn btn-warning" (click)="onDelete()">Delete</button>
-    </div>
+  <h3 class="modal-title">Delete client?</h3>
+  <div class="modal-body">This cannot be undone.</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" (click)="unsetContextDelete()">Cancel</button>
+    <button type="button" class="btn btn-warning" (click)="onDelete()">Delete</button>
+  </div>
 </clr-modal>
 
 <div class="clr-row">
-    <div class="clr-col-4">
-        <client-create [edited]="currentClient"></client-create>
+  <div class="clr-col-4">
+    <client-create [edited]="currentClient"></client-create>
 
+  </div>
+  <div class="clr-col-8">
+    <h2>Provision:</h2>
+    <div *ngIf="profit">
+
+      <h1 class="green">
+        {{ profit.Total|number:'1.2-2'}} PLN
+      </h1>
+      <h4>
+        New | {{profit.Profit.New|number:'1.2-2'}} PLN
+      </h4>
+      <h4>
+        Old | {{profit.Profit.Old|number:'1.2-2'}} PLN
+      </h4>
     </div>
-    <div class="clr-col-8">
-        <h2>Provision:</h2>
-        <h1 class="green" *ngIf="profit">
-            {{ profit.Total|number:'1.2-2'}} PLN
-        </h1>
-    </div>
+
+  </div>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { forkJoin, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Client } from '../models/client';
 import { AlertService } from '../services/alert.service';
@@ -19,8 +19,8 @@ export class ClientComponent implements OnInit {
   constructor(private clientService: ClientService, private alertService: AlertService) { 
   }
 
-  columns = ["Number", "Type", "Core", "Premium", "Total", "Created On"];
-  index = ["number", "type", "core", "premium", "total", "created_on"];
+  columns = ["Number", "Type", "Core", "Premium", "Total", "Created On", "Profit"];
+  index = ["number", "type", "core", "premium", "total", "created_on", "profit"];
 
 
   clients: Client[] = [];
@@ -32,13 +32,16 @@ export class ClientComponent implements OnInit {
     this.clientService.reload.pipe(takeUntil(this.componentDestroyed))
       .subscribe((result: boolean) => {
         if (result) {
-          this.clientService.getClients().subscribe((response) => {
-            this.clients = response;
+
+          forkJoin([this.clientService.getClients(), this.clientService.getProfit()])
+          .subscribe(results => {
+            const clientEndpoint = results[0];
+            const profitEndpoint = results[1];
+
+            this.profit = profitEndpoint;
+            this.clients = clientEndpoint.map((item, i) => Object.assign({}, item, profitEndpoint['Users'][i]));
           })
 
-          this.clientService.getProfit().subscribe((response) => {
-            this.profit = response;
-          })
         }
       })
     

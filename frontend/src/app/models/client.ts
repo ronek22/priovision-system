@@ -6,6 +6,7 @@ export class Client {
     premium: number;
     total: number;
     created_on: string;
+    profit? : number;
 
 
     constructor(id, number, type, core, premium, total, created_on) {
