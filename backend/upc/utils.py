@@ -13,15 +13,17 @@ def calculate_new_clients(clients):
     New Clients only total
     Profit depends on total_price and ammount of clients 
     '''
+    clients_profit = []
     profit = 0.0
     count_threshold = new_client_count_threshold(clients.count())
     for client in clients.all():
         total_threshold = new_client_price_threshold(client.total)
         multiply = matrix1.item((total_threshold,count_threshold)) 
         client_profit = float(client.total)*multiply
+        clients_profit.append({'id': client.id, 'profit': client_profit})
         profit += client_profit
 
-    return profit
+    return profit, clients_profit
 
 def new_client_price_threshold(total):
     if total < 79.99:
@@ -42,8 +44,9 @@ def new_client_count_threshold(counted):
 #endregion 
 
 #region Old Clients
-def calculate_old_clients(clients: Client):
+def calculate_old_clients(clients):
     profit = 0
+    clients_profit = []
 
     for client in clients.all():
         total_thresh = old_total_threshold(client.total)
@@ -53,9 +56,11 @@ def calculate_old_clients(clients: Client):
         if core_thresh == 0: client_profit += 3.0
         if client.premium:
             client_profit += calc_premium(client.premium)
+        
+        clients_profit.append({'id': client.id, 'profit': client_profit})
         profit += client_profit
         
-    return profit
+    return profit, clients_profit
 
 def calc_premium(premium):
     if premium <= 14.98:
@@ -83,15 +88,19 @@ def old_core_threshold(core):
 
 #endregion
 
-def calculate_profit_from_clients(clients: Client):
+def calculate_profit_from_clients(clients):
     # grupuj po typie klienta
-    new_clients = Client.objects.filter(type=TypeOfClient.NEW)
-    old_clients = Client.objects.filter(type=TypeOfClient.PRESENT)
+    new_clients = clients.filter(type=TypeOfClient.NEW)
+    old_clients = clients.filter(type=TypeOfClient.PRESENT)
     
-    profit_from_new = calculate_new_clients(new_clients)
-    profit_from_old = calculate_old_clients(old_clients)
+    profit_from_new, new_clients_profit = calculate_new_clients(new_clients)
+    profit_from_old, old_clients_profit = calculate_old_clients(old_clients)
+
+    all_clients_profit = new_clients_profit + old_clients_profit
+
 
     return {
+        'Users': sorted(all_clients_profit, key=lambda k: k['id']),
         'Profit': {
             'New': profit_from_new,
             'Old': profit_from_old

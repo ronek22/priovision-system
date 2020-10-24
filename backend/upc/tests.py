@@ -94,6 +94,8 @@ class UpcClientTestCase(APITestCase):
         obj.refresh_from_db()
         self.assertEqual(calculate_old_clients(Client.objects), float(obj.total)*1.7+30.0*1.8)
 
+        
+
     def testProfitFromMultipleClients(self):
         Client.objects.create(created_by=self.user, number=1, total=50.0)
         Client.objects.create(created_by=self.user, number=2, total=100.0)
@@ -105,6 +107,28 @@ class UpcClientTestCase(APITestCase):
         self.assertEqual(response.data['Profit']['New'], 960.0)
         self.assertEqual(response.data['Profit']['Old'], 96.5)
         self.assertEqual(response.data['Total'], 1056.5)
+
+    def testProfitFromMultipleUsers(self):
+        test_user = get_user_model().objects.create_user(username="test2", password="st3ong-Pssw1d")
+
+        Client.objects.create(created_by=self.user, number=1, total=50.0)
+        Client.objects.create(created_by=self.user, number=2, total=100.0)
+        Client.objects.bulk_create([Client(created_by=self.user,number=x,total=80.0) for x in range(3,13)])
+        Client.objects.create(type=TypeOfClient.PRESENT, created_by=self.user, number=1, total=25.00, core=15.00) # + 42.5 
+        Client.objects.create(type=TypeOfClient.PRESENT, created_by=self.user, number=1, total=30.00, core=5.00) # + 54.0
+
+        Client.objects.create(created_by=test_user, number=1, total=50.0)
+        Client.objects.create(created_by=test_user, number=2, total=100.0)
+        Client.objects.bulk_create([Client(created_by=test_user,number=x,total=80.0) for x in range(3,13)])
+        Client.objects.create(type=TypeOfClient.PRESENT, created_by=test_user, number=1, total=25.00, core=15.00) # + 42.5 
+
+        response = self.client.get(reverse('profit'))
+        self.assertEqual(response.data['Total'], 1056.5)
+
+        self.client.force_authenticate(user=test_user)
+        response = self.client.get(reverse('profit'))
+        self.assertEqual(response.data['Total'], 1002.5)
+
 
     def testUpdateAndRemoveExisitngClient(self):
         client = Client.objects.create(created_by=self.user, number=1, total=50.0)
