@@ -33,6 +33,8 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    console.log(this.isRequesting);
     // to initialize FormGroup
     this.loginForm = this.fb.group({
       'Username': [null, Validators.compose([Validators.required, Validators.max(15)])],
@@ -59,6 +61,7 @@ export class LoginComponent implements OnInit {
       },
       (error) => {
         this.alertService.error(`Cannot login! Error: ${error.error.detail}`)
+        this.loginForm.reset();
       });
   }
 

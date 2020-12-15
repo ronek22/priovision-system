@@ -13,6 +13,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(catchError(err => {
             if (err.status === 403) {
                 if (!this.authenticationService.isLoggedIn.getValue()) {
+                    this.authenticationService.isRequesting = false;
                     return throwError(err);
                 }
                 return this.handleUnauthorized(request, next);

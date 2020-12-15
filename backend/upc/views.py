@@ -24,6 +24,7 @@ class UpdateClientView(RetrieveUpdateDestroyAPIView):
         return Client.objects.filter(created_by=self.request.user)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_user_clients_for_current_month(request):
     user = request.user
     clients = Client.objects.filter(created_by=user, created_on__month=datetime.now().month)
@@ -31,6 +32,7 @@ def get_user_clients_for_current_month(request):
     return Response(clients_json)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_user_profit_for_current_month(request):
     user = request.user
     clients = Client.objects.filter(created_by=user, created_on__month=datetime.now().month)

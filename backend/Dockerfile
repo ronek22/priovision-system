@@ -16,3 +16,9 @@ RUN pip install pipenv
 COPY Pipfile Pipfile.lock ./
 
 RUN pipenv install --dev --ignore-pipfile --system
+
+COPY . .
+
+RUN python manage.py collectstatic --no-input
+
+RUN python manage.py spectacular --file schema.yml

@@ -10,28 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-import environ
-env = environ.Env()
-
-ENV_PATH = env.str('ENV_PATH', default="./.env")
-
-env.read_env(ENV_PATH)
-
-root_path = environ.Path(__file__) - 2
-ENV = env('DJANGO_ENV', default="Development")
-DEBUG = env.bool('DEBUG', default=False)
-SECRET_KEY = env('SECRET_KEY')
-REFRESH_TOKEN_SECRET_KEY = env('REFRESH_TOKEN_SECRET_KEY')
-
 
 from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.environ.get('SECRET_KEY', 'somedfaultKY*&bsjda78')
+REFRESH_TOKEN_SECRET_KEY = os.environ.get('REFRESH_TOKEN_SECRET_KEY')
+DEBUG = int(os.environ.get('DJANGO_DEBUG', 1))
 
 ALLOWED_HOSTS = ['backend', 'localhost', '127.0.0.1']
 
+USE_X_FORWARDED_HOST = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -44,7 +35,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'accounts',
-    'upc'
+    'upc',
+    'drf_spectacular'
 ]
 
 CORS_ALLOW_CREDENTIALS = True # to accept cookies vie ajax request
@@ -58,9 +50,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'accounts.authentication.SafeJWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated', # make all endpoints private
-    )
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated', # make all endpoints private
+    # )
 }
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -82,7 +75,7 @@ ROOT_URLCONF = 'conf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,6 +87,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'conf.wsgi.application'
 
@@ -154,45 +148,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-# Logging
-LOGS_ROOT = env('LOGS_ROOT', default=root_path('logs'))
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'console_format': {
-            'format': '%(name)-12s %(levelname)-8s %(message)s'
-        },
-        'file_format': {
-            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
-        }
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'console_format'
-        },
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGS_ROOT, 'django.log'),
-            'maxBytes': 1024 * 1024 * 15, # 15MB
-            'backupCount': 10,
-            'formatter': 'file_format'
-        },
-    },
-    'loggers': {
-        'django': {
-            'level': 'INFO',
-            'handlers': ['console', 'file'],
-            'propagate': False,
-        },
-        'apps': {
-            'level': 'DEBUG',
-            'handlers': ['console', 'file'],
-            'propagate': False,
-        }
-    }
-}
+
+

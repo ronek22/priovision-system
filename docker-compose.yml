@@ -6,6 +6,8 @@ services:
             - POSTGRES_DB=postgres
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
+        volumes:
+            - ./postgres-data:/var/lib/postgresql/data
 
     backend:
         build:
@@ -14,6 +16,7 @@ services:
         volumes: 
             - ./backend:/code
             - ./backend/logs/web:/logs
+            - static_vol:/code/static
         ports:
             - 8000:8000
         env_file: 
@@ -30,5 +33,11 @@ services:
             dockerfile: Dockerfile
         ports:
             - 80:80
+        volumes:
+            - static_vol:/var/www/static/
         depends_on:
             - backend
+
+
+volumes:
+    static_vol:

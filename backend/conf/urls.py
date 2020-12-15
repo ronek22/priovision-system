@@ -17,9 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from accounts import urls as accounts_urls
 from upc import urls as upc_urls
+from rest_framework.schemas import get_schema_view
+from rest_framework.documentation import include_docs_urls
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('upc/', include('upc.urls'))
+    path('upc/', include('upc.urls')),
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('docs/', SpectacularSwaggerView.as_view(template_name="swagger-ui.html", url_name="schema"), name="swagger-ui"),
 ]

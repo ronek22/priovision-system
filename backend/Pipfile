@@ -18,6 +18,10 @@ pyjwt = "*"
 numpy = "*"
 psycopg2-binary = "*"
 gunicorn = "*"
+uritemplate = "*"
+pyyaml = "*"
+coreapi = "*"
+drf-spectacular = "*"
 
 [requires]
 python_version = "3.8"
